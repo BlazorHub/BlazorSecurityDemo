@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -13,7 +14,9 @@ namespace IdentityProvider
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+
+                // let's include the role claim in the profile
+                new ProfileWithRoleIdentityResource(),
                 new IdentityResources.Email()
             };
 
@@ -21,7 +24,8 @@ namespace IdentityProvider
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("weatherapi", "The Weather API")
+                // the api requires the role claim
+                new ApiResource("weatherapi", "The Weather API", new[] { JwtClaimTypes.Role })
             };
 
 
